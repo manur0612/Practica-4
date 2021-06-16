@@ -12,7 +12,8 @@ namespace AppPeruFail.Models
 
         [Required(ErrorMessage = "Por favor tu comentario")]
         [Display(Name="Comentario")]
-        public string Titulo { get; set; }
-
+        public string Coments { get; set; }
+        public Fail Fail { get; set; }
+        public int FailID { get; set; }  
     }
 }

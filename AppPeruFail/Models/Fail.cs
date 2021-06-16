@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,7 @@ namespace AppPeruFail.Models
         [Required(ErrorMessage = "Por favor ingresa la foto")]
         [Display(Name="Foto de la publicación")]
         public string Foto { get; set; }
+
+        public ICollection<Comentario> Comentarios { get; set; }
     }
 }

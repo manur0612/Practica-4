@@ -27,11 +27,16 @@ namespace AppPeruFail.Data.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("FailID")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("FailID");
 
                     b.ToTable("Comentarios");
                 });
@@ -258,6 +263,17 @@ namespace AppPeruFail.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("AppPeruFail.Models.Comentario", b =>
+                {
+                    b.HasOne("AppPeruFail.Models.Fail", "Fail")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("FailID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fail");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -307,6 +323,11 @@ namespace AppPeruFail.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AppPeruFail.Models.Fail", b =>
+                {
+                    b.Navigation("Comentarios");
                 });
 #pragma warning restore 612, 618
         }

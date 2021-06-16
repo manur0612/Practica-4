@@ -48,19 +48,6 @@ namespace AppPeruFail.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comentarios",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Titulo = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comentarios", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Fails",
                 columns: table => new
                 {
@@ -181,6 +168,26 @@ namespace AppPeruFail.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comentarios",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    FailID = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comentarios", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Comentarios_Fails_FailID",
+                        column: x => x.FailID,
+                        principalTable: "Fails",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -217,6 +224,11 @@ namespace AppPeruFail.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comentarios_FailID",
+                table: "Comentarios",
+                column: "FailID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -240,13 +252,13 @@ namespace AppPeruFail.Data.Migrations
                 name: "Comentarios");
 
             migrationBuilder.DropTable(
-                name: "Fails");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Fails");
         }
     }
 }
